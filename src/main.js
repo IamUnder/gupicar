@@ -13,6 +13,8 @@ import { getFirestore } from "firebase/firestore/lite"
 import { getAuth } from "firebase/auth"
 import firebase from "firebase/compat/app"
 import "firebase/compat/storage"
+import "firebase/compat/auth"
+import "firebase/compat/firestore"
 
 const firebaseConfig = {
     apiKey: process.env.VUE_APP_APIKEY,
@@ -25,6 +27,13 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
+
+// Comprobar el login del usuario
+firebase.auth().onAuthStateChanged(user => {
+    let role = 0 // necesitamos comprobar el rol del usuario
+    store.dispatch("fetchUser", {user, role});
+});
+
 var storage = firebase.storage()
 // Inicialización firebase
 const app = initializeApp(firebaseConfig)
