@@ -9,6 +9,7 @@
     </div>
     <div>
         <h1 class="text-center">Añadir coche</h1>
+        <carForm/>
     </div>
     <div>
         <h1 class="text-center">test1</h1>
@@ -17,12 +18,14 @@
 
 <script>
     import navbar from '@/components/Navbar.vue'
+    import carForm from '@/components/Form.vue'
     import firebase from 'firebase/compat/app'
     import { mapGetters } from 'vuex'
 
     export default {
         components: {
-            navbar
+            navbar,
+            carForm
         },
         data: () => ({
             
