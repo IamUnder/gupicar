@@ -27,7 +27,7 @@
     name: 'Navbar',
 
     data: () => ({
-      open: true
+      open: false
     }),
     methods: {
       goTo (url) {

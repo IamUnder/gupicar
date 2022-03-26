@@ -2,6 +2,7 @@
     <h1>Texto de ejemplo para agregar modelos</h1>
     <!-- component -->
     <div class="p-5">
+        <!-- Stepper -->
         <div class="mx-4 p-4">
             <div class="flex items-center">
                 <div class="flex items-center text-black relative">
@@ -10,7 +11,7 @@
                             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                         </svg>
                     </div>
-                    <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-teal-600">Datos basicos</div>
+                    <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-teal-600">Basico</div>
                 </div>
                 <div class="flex-auto border-t-2 transition duration-500 ease-in-out border-teal-600" :class="{ 'border-blue-300' : step > 0 }"></div>
                 <div class="flex items-center text-blue relative">
@@ -19,7 +20,7 @@
                             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                         </svg>
                     </div>
-                    <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-teal-600">Datos avanzamos</div>
+                    <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-teal-600">Avanzado</div>
                 </div>
                 <div class="flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300" :class="{ 'border-blue-300' : step > 1 }"></div>
                 <div class="flex items-center text-black relative">
@@ -29,7 +30,7 @@
                             <polyline points="22,6 12,13 2,6"></polyline>
                         </svg>
                     </div>
-                    <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-gray-500">Imagenes</div>
+                    <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-black">Imagenes</div>
                 </div>
                 <div class="flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300" :class="{ 'border-blue-300' : step > 2 }"></div>
                 <div class="flex items-center text-black relative">
@@ -40,11 +41,13 @@
                             <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
                         </svg>
                     </div>
-                    <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-gray-500">Resumen</div>
+                    <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-black">Resumen</div>
                 </div>
             </div>
         </div>
-        <div class="mt-8 p-4">
+        <!-- !Stepper -->
+        <!-- Primer seccion -->
+        <div class="mt-8 p-4" v-if="step == 0">
             <div>
                 <div class="font-bold text-gray-600 text-xs leading-8 uppercase h-6 mx-2 mt-3">Full Name</div>
                 <div class="flex flex-col md:flex-row">
