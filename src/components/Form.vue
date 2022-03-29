@@ -57,7 +57,7 @@
                             </svg>
                             <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="marca" @change="getModelos()">
                                 <option disabled selected value="0">Seleccione una marca</option>
-                                <option v-for="marca in marcas" :value="marca">{{marca}}</option>
+                                <option v-for="marca in marcas" :value="marca.codigo">{{marca.nome}}</option>
                             </select>
                         </div>
                     </div>
@@ -67,13 +67,13 @@
                             <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
-                            <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="modelo" @change="getModelos()">
+                            <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="modelo">
                                 <template v-if="modelos.length == 0">
                                     <option disabled selected value="0">Seleccione una marca primero</option>
                                 </template>
                                 <template v-else>
                                     <option disabled selected value="0">Seleccione un modelo</option>
-                                    <option v-for="modelo in modelos" :value="modelo" :key="modelo">{{modelo}}</option> 
+                                    <option v-for="modelo in modelos" :value="modelo.codigo" :key="modelo.codigo">{{modelo.nome}}</option> 
                                 </template>
                             </select>
                         </div>
@@ -124,6 +124,8 @@
 </template>
 
 <script>
+    import axios from 'axios'
+
     export default {
         data: () => ({
             step: 0,
@@ -144,13 +146,19 @@
 
                 console.log(car);
             },
-            getModelos () {
-                this.modelos = ['modelo 1', 'modelo 2', 'modelo 3'];
-                console.log('test');
+            async getModelos () {
+                await axios.get('https://parallelum.com.br/fipe/api/v1/carros/marcas/' + this.$refs.marca.value + '/modelos').then(response => {
+                    this.modelos = response.data.modelos
+                })
+            },
+            async getMarcas() {
+                await axios.get('https://parallelum.com.br/fipe/api/v1/carros/marcas').then(response => {
+                    this.marcas = response.data
+                })
             }
         },
         mounted () {
-            this.marcas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            this.getMarcas();
         }
     }
 </script>
