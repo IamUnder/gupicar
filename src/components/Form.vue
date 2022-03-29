@@ -58,16 +58,16 @@
                             <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="marca" @change="setMarca()">
                                 <option disabled selected value="0">Seleccione una marca</option>
                                 <option v-for="mar in marcas" :value="mar.nome" :key="mar.codigo">{{mar.nome}}</option>
-                                <option value="otro">Otro</option>
+                                <option value="otro">Otra</option>
                             </select>
                         </div>
                         <div v-else class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
-                            <input placeholder="Marca" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="marca"> 
+                            <input placeholder="Añade una marca" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="marca"> 
                         </div>
                     </div>
                     <div class="w-full flex-1 mx-2 ">
                         <div class="font-bold text-black text-xs leading-8 uppercase h-6 mx-2 mt-3">Modelo</div>
-                        <div class=" my-2 p-1 flex rounded border relative">
+                        <div v-if="!otroModelo" class=" my-2 p-1 flex rounded border relative">
                             <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -77,16 +77,20 @@
                                 </template>
                                 <template v-else>
                                     <option disabled selected value="0">Seleccione un modelo</option>
-                                    <option v-for="modelo in modelos" :value="modelo.Model_Name" :key="modelo.Model_ID">{{modelo.Model_Name}}</option> 
+                                    <option v-for="model in modelos" :value="modelo.Model_Name" :key="model.Model_ID">{{model.Model_Name}}</option> 
+                                    <option value="otro">Otro</option>
                                 </template>
                             </select>
+                        </div>
+                        <div v-else class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                            <input placeholder="Añade un modelo" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="modelo"> 
                         </div>
                     </div>
                     <div class="w-full flex-1 mx-2 ">
                         <div class="font-bold text-black text-xs leading-8 uppercase h-6 mx-2 mt-3">Versión concreta</div>
                         <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
-                            <input v-if="modelos.length != 0" placeholder="First Name" class="p-1 px-2 appearance-none outline-none w-full text-gray-800"> 
-                            <input v-else placeholder="First Name" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" disabled> 
+                            <input v-if="modelo != ''" placeholder="Añade versión concreta" class="p-1 px-2 appearance-none outline-none w-full text-gray-800"> 
+                            <input v-else placeholder="Selecciona modelo primero" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" disabled> 
                         </div>
                     </div>
                 </div>
@@ -114,7 +118,7 @@
             <h1>Resumen</h1>
         </div>
         <div class="mt-8 p-4">
-            {{marca}}
+            {{modelo}}
         </div>
         <div class="mt-8 p-4">
             <div class="flex p-2 mt-4">
@@ -138,10 +142,11 @@
             step: 0,
             marcas: [],
             modelos: [],
-            marca: '',
-            modelo: '',
             otraMarca: false, 
             otroModelo: false,
+            marca: '',
+            modelo: '',
+            version: '',
         }),
         methods: {
             next () {
@@ -153,7 +158,8 @@
             setCar () {
                 var car = {
                     marca: this.marca,
-                    modelo: this.modelo
+                    modelo: this.modelo,
+                    version: this.version,
                 }
 
                 if (this.otraMarca) {
@@ -170,6 +176,8 @@
                 
                 // Version de otra marca
                 if (this.$refs.marca.value == 'otro') {
+                    this.marca = ''
+                    this.modelo = ''
                     this.otraMarca = true;
                     this.otroModelo = true;
                 } else {
@@ -185,7 +193,14 @@
 
             },
             setModelo () {
-                this.modelo = this.$refs.modelo.value
+
+                if (this.$refs.modelo.value == 'otro') {
+                    this.modelo = ''
+                    this.otroModelo = true;
+                } else {
+                    this.modelo = this.$refs.modelo.value
+                }
+
             },
             async getModelos (marca) {
 
