@@ -51,14 +51,18 @@
                 <div class="flex flex-col md:flex-row">
                     <div class="w-full flex-1 mx-2 ">
                         <div class="font-bold text-black text-xs leading-8 uppercase h-6 mx-2 mt-3">Marca</div>
-                        <div class=" my-2 p-1 flex rounded border relative">
+                        <div v-if="!otraMarca" class=" my-2 p-1 flex rounded border relative">
                             <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
                             <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="marca" @change="setMarca()">
                                 <option disabled selected value="0">Seleccione una marca</option>
-                                <option v-for="marca in marcas" :value="marca.nome" :key="marca.codigo">{{marca.nome}}</option>
+                                <option v-for="mar in marcas" :value="mar.nome" :key="mar.codigo">{{mar.nome}}</option>
+                                <option value="otro">Otro</option>
                             </select>
+                        </div>
+                        <div v-else class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                            <input placeholder="Marca" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="marca"> 
                         </div>
                     </div>
                     <div class="w-full flex-1 mx-2 ">
@@ -110,6 +114,9 @@
             <h1>Resumen</h1>
         </div>
         <div class="mt-8 p-4">
+            {{marca}}
+        </div>
+        <div class="mt-8 p-4">
             <div class="flex p-2 mt-4">
                 <button @click="previus()" class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-gray-200  bg-gray-100 text-gray-700 border duration-200 ease-in-out border-gray-600 transition">Paso anterior</button>
                 <div class="flex-auto flex flex-row-reverse">
@@ -133,6 +140,8 @@
             modelos: [],
             marca: '',
             modelo: '',
+            otraMarca: false, 
+            otroModelo: false,
         }),
         methods: {
             next () {
@@ -147,15 +156,33 @@
                     modelo: this.modelo
                 }
 
+                if (this.otraMarca) {
+                    console.log('hay que guardar la marca');
+                }
+
+                if (this.otroModelo) {
+                    console.log('hay que guardar el modelo');
+                }
+
                 console.log(car);
             },
             setMarca () {
-                this.marca = this.$refs.marca.value
+                
+                // Version de otra marca
+                if (this.$refs.marca.value == 'otro') {
+                    this.otraMarca = true;
+                    this.otroModelo = true;
+                } else {
+                    this.marca = this.$refs.marca.value;
 
-                if (this.marca == 'VW - VolksWagen') this.marca = 'Volkswagen'
-                if (this.marca == 'Rolls-Royce') this.marca = 'Rolls Royce'
+                    // Areglo de marcas
+                    if (this.marca == 'VW - VolksWagen') this.marca = 'Volkswagen'
+                    if (this.marca == 'Rolls-Royce') this.marca = 'Rolls Royce'
 
-                this.getModelos(this.marca)
+                    this.getModelos(this.marca)
+                }
+
+
             },
             setModelo () {
                 this.modelo = this.$refs.modelo.value
