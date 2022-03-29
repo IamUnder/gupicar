@@ -55,9 +55,9 @@
                             <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
-                            <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="marca" @change="getModelos()">
+                            <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="marca" @change="setMarca()">
                                 <option disabled selected value="0">Seleccione una marca</option>
-                                <option v-for="marca in marcas" :value="marca.codigo">{{marca.nome}}</option>
+                                <option v-for="marca in marcas" :value="marca.nome" :key="marca.codigo">{{marca.nome}}</option>
                             </select>
                         </div>
                     </div>
@@ -67,13 +67,13 @@
                             <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
-                            <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="modelo">
+                            <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" ref="modelo" @change="setModelo()">
                                 <template v-if="modelos.length == 0">
                                     <option disabled selected value="0">Seleccione una marca primero</option>
                                 </template>
                                 <template v-else>
                                     <option disabled selected value="0">Seleccione un modelo</option>
-                                    <option v-for="modelo in modelos" :value="modelo.codigo" :key="modelo.codigo">{{modelo.nome}}</option> 
+                                    <option v-for="modelo in modelos" :value="modelo.Model_Name" :key="modelo.Model_ID">{{modelo.Model_Name}}</option> 
                                 </template>
                             </select>
                         </div>
@@ -131,6 +131,8 @@
             step: 0,
             marcas: [],
             modelos: [],
+            marca: '',
+            modelo: '',
         }),
         methods: {
             next () {
@@ -141,14 +143,27 @@
             },
             setCar () {
                 var car = {
-                    marca: this.$refs.marca.value
+                    marca: this.marca,
+                    modelo: this.modelo
                 }
 
                 console.log(car);
             },
-            async getModelos () {
-                await axios.get('https://parallelum.com.br/fipe/api/v1/carros/marcas/' + this.$refs.marca.value + '/modelos').then(response => {
-                    this.modelos = response.data.modelos
+            setMarca () {
+                this.marca = this.$refs.marca.value
+
+                if (this.marca == 'VW - VolksWagen') this.marca = 'Volkswagen'
+                if (this.marca == 'Rolls-Royce') this.marca = 'Rolls Royce'
+
+                this.getModelos(this.marca)
+            },
+            setModelo () {
+                this.modelo = this.$refs.modelo.value
+            },
+            async getModelos (marca) {
+
+                await axios.get('https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/' + marca + '?format=json',).then(response => {
+                    this.modelos = response.data.Results
                 })
             },
             async getMarcas() {
