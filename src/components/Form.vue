@@ -136,6 +136,8 @@
 
 <script>
     import axios from 'axios'
+    import { db } from '../main.js'
+    import { doc, setDoc, getDocs, collection, query, where } from "firebase/firestore/lite"
 
     export default {
         data: () => ({
@@ -155,7 +157,7 @@
             previus () {
                 if (this.step != 0) this.step--
             },
-            setCar () {
+            async setCar () {
                 var car = {
                     marca: this.marca,
                     modelo: this.modelo,
@@ -163,11 +165,34 @@
                 }
 
                 if (this.otraMarca) {
-                    console.log('hay que guardar la marca');
+
+                    let q = query(collection(db, 'marcas'),where('nome','==',this.marca))
+                    let isSaved = await getDocs(q)
+                    if (isSaved._docs.length == 0) {
+                        let uid = this.uid()
+                        const docRef = doc(db, 'marcas', uid)
+                        setDoc(docRef, {
+                            nome: this.marca,
+                            codigo: uid
+                        })
+                    }
+                    
                 }
 
                 if (this.otroModelo) {
-                    console.log('hay que guardar el modelo');
+                    
+                    let q = query(collection(db, 'modelos'),where('Model_Name','==',this.modelo),where('marca','==',this.marca))
+                    let isSaved = await getDocs(q)
+                    if (isSaved._docs.length == 0) {
+                        let uid = this.uid()
+                        const docRef = doc(db, 'modelos', uid)
+                        setDoc(docRef, {
+                            Model_Name: this.marca,
+                            Model_ID: uid,
+                            marca: this.marca
+                        })
+                    }
+
                 }
 
                 console.log(car);
@@ -212,6 +237,15 @@
                 await axios.get('https://parallelum.com.br/fipe/api/v1/carros/marcas').then(response => {
                     this.marcas = response.data
                 })
+
+                let q = query(collection(db, 'marcas'),where('nome','==','Volkswagen'))
+                let firebase = 'test'
+
+
+                console.log(firebase);
+            },
+            uid () {
+                return Math.random().toString(36).substr(2, 9)
             }
         },
         mounted () {
