@@ -187,7 +187,7 @@
                         let uid = this.uid()
                         const docRef = doc(db, 'modelos', uid)
                         setDoc(docRef, {
-                            Model_Name: this.marca,
+                            Model_Name: this.modelo,
                             Model_ID: uid,
                             marca: this.marca
                         })
@@ -232,20 +232,51 @@
                 await axios.get('https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/' + marca + '?format=json',).then(response => {
                     this.modelos = response.data.Results
                 })
+
+                let q = query(collection(db, 'modelos'),where('marca','==',marca))
+                let firebase = await getDocs(q)
+                let firebaseModelos = []
+                firebase._docs.forEach(doc => {
+                    firebaseModelos.push(doc.data())
+                })
+
+                this.modelos = this.modelos.concat(firebaseModelos)
+                this.modelos.sort(this.compareModelos)
             },
             async getMarcas() {
                 await axios.get('https://parallelum.com.br/fipe/api/v1/carros/marcas').then(response => {
                     this.marcas = response.data
                 })
 
-                let q = query(collection(db, 'marcas'),where('nome','==','Volkswagen'))
-                let firebase = 'test'
+                let firebase = await getDocs(collection(db, 'marcas'))
+                let firebaseMarcas = []
+                firebase.forEach(doc => {
+                    firebaseMarcas.push(doc.data())
+                });
 
-
-                console.log(firebase);
+                this.marcas = this.marcas.concat(firebaseMarcas)
+                this.marcas.sort(this.compareMarca)
             },
             uid () {
                 return Math.random().toString(36).substr(2, 9)
+            },
+            compareMarca( a, b ) {
+                if ( a.nome.toUpperCase() < b.nome.toUpperCase() ){
+                    return -1;
+                }
+                if ( a.nome.toUpperCase() > b.nome.toUpperCase() ){
+                    return 1;
+                }
+                return 0;
+            },
+            compareModelo( a, b ) {
+                if ( a.Model_Name.toUpperCase() < b.Model_Name.toUpperCase() ){
+                    return -1;
+                }
+                if ( a.Model_Name.toUpperCase() > b.Model_Name.toUpperCase() ){
+                    return 1;
+                }
+                return 0;
             }
         },
         mounted () {
