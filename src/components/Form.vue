@@ -87,29 +87,156 @@
                         </div>
                     </div>
                     <div class="w-full flex-1 mx-2 ">
-                        <div class="font-bold text-black text-xs leading-8 uppercase h-6 mx-2 mt-3">Versión concreta</div>
+                        <div class="font-bold text-black text-xs leading-8 uppercase h-6 mx-2 mt-3">Nombre a mostrar</div>
                         <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
-                            <input v-if="modelo != ''" placeholder="Añade versión concreta" class="p-1 px-2 appearance-none outline-none w-full text-gray-800"> 
+                            <input v-if="modelo != ''" v-model="version" placeholder="Titulo anuncio" class="p-1 px-2 appearance-none outline-none w-full text-gray-800"> 
                             <input v-else placeholder="Selecciona modelo primero" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" disabled> 
                         </div>
                     </div>
                 </div>
                 <div class="flex flex-col md:flex-row">
                     <div class="w-full mx-2 flex-1 ">
-                        <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"> Username</div>
+                        <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Kilometros</div>
                         <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
-                            <input placeholder="Just a hint.." class="p-1 px-2 appearance-none outline-none w-full text-gray-800"> </div>
+                            <input type="number" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="kilometros"> </div>
                     </div>
                     <div class="w-full mx-2 flex-1 ">
-                        <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"> Your Email</div>
+                        <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Precio</div>
                         <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
-                            <input placeholder="jhon@doe.com" class="p-1 px-2 appearance-none outline-none w-full text-gray-800"> </div>
+                            <input placeholder="precio" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="precio"> </div>
+                    </div>
+                    <div class="w-full mx-2 flex-1 ">
+                        <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Precio especial</div>
+                        <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                            <input placeholder="precio especial" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="precioEspecial"> </div>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row">
+                    <div class="w-full mx-2 flex-1 ">
+                        <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Año</div>
+                        <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                            <input type="number" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="ano"> </div>
+                    </div>
+                    <div class="w-full mx-2 flex-1 ">
+                        <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Combustible</div>
+                        <div class=" my-2 p-1 flex rounded border relative">
+                            <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                            <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" v-model="combustible">
+                                <option value="Gasolina">Gasolina</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Hibrido">Hibrido</option>
+                                <option value="Electrico">Electrico</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-full mx-2 flex-1 ">
+                        <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Carroceria</div>
+                        <div class=" my-2 p-1 flex rounded border relative">
+                            <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                            <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" v-model="carroceria">
+                                <option value="Berlina">Berlina</option>
+                                <option value="Familiar">Familiar</option>
+                                <option value="Coupe">Coupe</option>
+                                <option value="Monovolumen">Monovolumen</option>
+                                <option value="4x4 SUV">4x4 SUV</option>
+                                <option value="Cabrio">Cabrio</option>
+                                <option value="Pick Up">Pick Up</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="mt-8 p-4" v-if="step == 1">
             <h1>Datos avanzados</h1>
+            <div class="flex flex-col md:flex-row">
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Transmisión</div>
+                    <div class=" my-2 p-1 flex rounded border relative">
+                        <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" v-model="transmision">
+                            <option value="Manual">Manual</option>
+                            <option value="Automático">Automático</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Tracción</div>
+                    <div class=" my-2 p-1 flex rounded border relative">
+                        <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" v-model="traccion">
+                            <option value="Trasera">Trasera</option>
+                            <option value="Delantera">Delantera</option>
+                            <option value="4x4">4x4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Numero de puertas</div>
+                    <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                        <input type="number" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="puertas"> </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row">
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Color</div>
+                    <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                        <input placeholder="Color del vehiculo" type="text" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="color"> </div>
+                </div>
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Motor</div>
+                    <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                        <input placeholder="Tipo de motor" type="text" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="motor"> </div>
+                </div>
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Potencia</div>
+                    <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                        <input placeholder="Potencia del vehiculo" type="text" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="potencia"> </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row">
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Estado</div>
+                    <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                        <input type="text" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="estado"> </div>
+                </div>
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Garantia</div>
+                    <div class=" my-2 p-1 flex rounded border relative">
+                        <svg class="absolute right-2 top-2 pointer-events-none h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <select class="p-1 px-2 appearance-none outline-none w-full text-gray-800 form-select" v-model="garantia">
+                            <option select value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Periodo de garantia</div>
+                    <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                        <input v-if="garantia == 'Si'" placeholder="Periodo de garantia" type="text" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="periodoGarantia"> 
+                        <input v-else placeholder="No has selecionado garantia" type="text" class="p-1 px-2 appearance-none outline-none w-full text-gray-800" disabled> 
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row">
+                <div class="w-full mx-2 flex-1 ">
+                    <div class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase">Descripción</div>
+                    <div class="bg-white my-2 p-1 flex border border-gray-200 rounded ">
+                        <textarea placeholder="Descripción del vehiculo..." class="p-1 px-2 appearance-none outline-none w-full text-gray-800" v-model="descripcion"></textarea>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="mt-8 p-4" v-if="step == 2">
             <h1>Imagenes</h1>
@@ -117,9 +244,8 @@
         <div class="mt-8 p-4" v-if="step == 3">
             <h1>Resumen</h1>
         </div>
-        <div class="mt-8 p-4">
-            {{modelo}}
-        </div>
+        <!-- <div class="mt-8 p-4">           
+        </div> -->
         <div class="mt-8 p-4">
             <div class="flex p-2 mt-4">
                 <button @click="previus()" class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-gray-200  bg-gray-100 text-gray-700 border duration-200 ease-in-out border-gray-600 transition">Paso anterior</button>
@@ -149,6 +275,24 @@
             marca: '',
             modelo: '',
             version: '',
+            kilometros: '',
+            precio: '',
+            precioEspecial: '',
+            ano: '',
+            combustible: 'Diesel',
+            carroceria: 'Berlina',
+            transmision: 'Manual',
+            traccion: 'Trasera',
+            puertas: '',
+            color: '',
+            motor: '',
+            potencia: '',
+            estado: 'Como nuevo',
+            garantia: 'Si',
+            periodoGarantia: '',
+            descripcion: '',
+            imgInterior: [],
+            imgExterior: []
         }),
         methods: {
             next () {
@@ -158,10 +302,34 @@
                 if (this.step != 0) this.step--
             },
             async setCar () {
-                var car = {
+
+                let fecha = new Date()
+
+                let car = {
                     marca: this.marca,
                     modelo: this.modelo,
                     version: this.version,
+                    kilometros: this.kilometros,
+                    precio: this.precio,
+                    precioEspecial: this.precioEspecial,
+                    ano: this.ano,
+                    combustible: this.combustible,
+                    carroceria: this.carroceria,
+                    transmision: this.transmision,
+                    traccion: this.traccion,
+                    puertas: this.puertas,
+                    color: this.color,
+                    motor: this.motor,
+                    potencia: this.potencia,
+                    estado: this.estado,
+                    garantia: this.garantia,
+                    periodoGarantia: this.periodoGarantia,
+                    descripcion: this.descripcion,
+                    imgInterior: this.imgInterior,
+                    imgExterior: this.imgExterior,
+                    destacado: false,
+                    date: fecha.toLocaleDateString(),
+                    modified: fecha.toLocaleDateString()
                 }
 
                 if (this.otraMarca) {
@@ -195,7 +363,11 @@
 
                 }
 
-                console.log(car);
+                // Si todo esta bien, guardamos el vehiculo
+                let uid = this.uid()
+                const docRef = doc(db, 'vehiculos', uid)
+                setDoc(docRef, car)
+
             },
             setMarca () {
                 
